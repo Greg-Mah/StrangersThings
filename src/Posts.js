@@ -1,25 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import APIFetch from './api';
+import NewPostForm from './NewPostForm';
+import Post from './Post';
 
 const Posts=(props)=>
 {
-    const posts=props.posts;
-    const setPosts=props.setPosts;
-    console.log(posts);
+    const [posts,setPosts]=useState([]);
+    const token=props.token;
+    const [showCreatePost, setShowCreatePost]=useState(false);
 
-    return <>{posts.map((post)=>
+    
+    useEffect(()=>
+    {
+        Promise.all([APIFetch(
+            {
+                url:"posts/",
+                token:token
+            }
+        )])
+        .then(([response])=>
         {
-            return <div key={post.key}>
-                {(post.title ? <h2>{post.title}</h2> : null)}
-                {(post.author.username ? <p>Seller:{post.author.username}</p> : null)}
-                {(post.description ? <p>{post.description}</p> : null)}
-                {(post.price ? <p>Price:{post.price}</p> : null)}
-                {(post.location ? <p>Location:{post.location}</p> : null)}
+            setPosts(response.data.posts);
+        });
+    },[])
 
-
-
-
-            </div>
-        })}</>
+    return <><h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide create new post</h2>
+    {showCreatePost ? <NewPostForm/>:null}
+    {posts.map((post)=>
+    {
+        return <Post key={post._id} post={post}/>
+    })}
+    </>
 }
 
 export default Posts;

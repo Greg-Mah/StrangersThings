@@ -1,0 +1,14 @@
+*
+{
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+title
+{
+    display:none;
+}
+a
+{
+    color:rgb(0,0,0);
+    text-decoration: none;
+}

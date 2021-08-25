@@ -14,7 +14,7 @@ const Post=(props)=>
     const postAPI=(type,bodyInput,message)=>
     {
         APIFetch({
-            url:"post/"+post._id+(message ? "messages":""),
+            url:"post/"+post._id+(message ? "/messages/":"/"),
             method:type,
             token:token,
             ...(bodyInput && {body:bodyInput})

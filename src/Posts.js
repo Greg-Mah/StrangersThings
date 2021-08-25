@@ -3,32 +3,37 @@ import APIFetch from './api';
 import NewPostForm from './NewPostForm';
 import Post from './Post';
 
+
 const Posts=(props)=>
 {
     const [posts,setPosts]=useState([]);
     const token=props.token;
     const [showCreatePost, setShowCreatePost]=useState(false);
 
-    
-    useEffect(()=>
+    const fetchPosts=()=>
     {
         Promise.all([APIFetch(
-            {
-                url:"posts/",
-                token:token
-            }
+        {
+            url:"posts/",
+            token:token
+        }
         )])
         .then(([response])=>
         {
             setPosts(response.data.posts);
         });
+    }
+
+    useEffect(()=>
+    {
+        fetchPosts();
     },[])
 
-    return <><h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide create new post</h2>
-    {showCreatePost ? <NewPostForm/>:null}
+    return <>{token ? <h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide New Post form</h2> : null}
+    {showCreatePost ? <NewPostForm token={token} fetchPosts={fetchPosts} setShowCreatePost={setShowCreatePost}/>:null}
     {posts.map((post)=>
     {
-        return <Post key={post._id} post={post}/>
+        return <Post key={post._id} post={post} fetchPosts={fetchPosts} token={token}/>
     })}
     </>
 }

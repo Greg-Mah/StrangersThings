@@ -5,6 +5,8 @@ import APIFetch from './api';
 const NewPostForm =(props)=>
 {
     const token=props.token;
+    const fetchPosts=props.fetchPosts;
+    const setShowCreatePost=props.setShowCreatePost;
 
     const [title,setTitle]=useState("");
     const [description,setDescription]=useState("");
@@ -13,11 +15,15 @@ const NewPostForm =(props)=>
     const [willDeliver,setWillDeliver]=useState(false);
     const [message,setMessage]=useState("Fill out the form. Title, Description, and Price are required. Location will default to [On Request] if left empty.");
     
-
+    const history=useHistory();
 
     return <form onSubmit={(event)=>
     {
         event.preventDefault();
+        if(location==="")
+        {
+            location="[On Request]";
+        }
         APIFetch(
             {
                 url:"posts/",
@@ -40,9 +46,9 @@ const NewPostForm =(props)=>
         {
             if(response.success)
             {
-                setToken(response.data.token);
                 setMessage(response.data.message);
-                setUser(username);
+                fetchPosts();
+                setShowCreatePost();
             }
             else
             {
@@ -51,7 +57,7 @@ const NewPostForm =(props)=>
         })
         
     }}>
-        <h2>{type.toUpperCase()}</h2>
+        <h2>New Post Form:</h2>
         <input required type="text" placeholder="Title" value={title} onChange={(event)=>
         {
             setTitle(event.target.value);
@@ -73,11 +79,9 @@ const NewPostForm =(props)=>
             setWillDeliver(!willDeliver);
         }}/>
         <label htmlFor="Will Deliver.">Will Deliver.</label>
-    
-        
         <p>{message}</p>
 
-        <button type="submit" disabled={!title||!description||price}>{Submit}</button>
+        <button type="submit" disabled={!title||!description||!price}>Submit</button>
     </form>
 }
 

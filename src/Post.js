@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
+import APIFetch from './api';
+
+
 
 
 const Post=(props)=>
 {
     const post=props.post;
+    const token=props.token;
 
-    const [focus,setFocus]=useState();
+    const [showMessages,setShowMessages]=useState();
 
-    return <div onClick={()=>
+    const postAPI=(type,bodyInput,message)=>
     {
-        setFocus(!focus);
-    }}>
+        APIFetch({
+            url:"post/"+post._id+(message ? "messages":""),
+            method:type,
+            token:token,
+            ...(bodyInput && {body:bodyInput})
+        }
+        )
+    }
+
+    return <>
         {(post.title ? <h2>{post.title}</h2> : null)}
         {(post.author.username ? <p>Seller: {post.author.username}</p> : null)}
         {(post.description ? <p>{post.description}</p> : null)}
@@ -20,18 +32,22 @@ const Post=(props)=>
         {(post.createdAt ? <p>Created: {post.createdAt}</p> : null)}
         {(post.updatedAt ? <p>Last updated: {post.updatedAt}</p> : null)}
         {(post.messages.length!==0 ? <p>Messages: {post.messages.length}</p> : null)}
-        {(focus ? <>
-            {post.isAuthor ? <>
-                <button>Delete</button>
-                <button>Edit</button>
-            </>:null}
-            {<button>Message</button>}
-            {post.messages.map((message)=>
-            {
-                return <Message key={message._id} message={message}/>;
-            })}
-        </>: null)}
-    </div>;
+        {post.isAuthor ? <>
+        <button>Delete</button>
+        <button>Edit</button>
+        <button onClick={()=>
+        {
+            setShowMessages(!showMessages);
+        }}>Show Post Messages</button>
+        </>:null}
+        {!post.isAuthor&&token ? <button>Message</button>:null}
+
+        {(showMessages ? post.messages.map((message)=>
+        {
+            return <Message key={message._id} message={message}/>;
+        })
+        : null)}
+    </>;
 }
 
 export default Post;

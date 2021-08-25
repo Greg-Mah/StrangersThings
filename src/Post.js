@@ -41,7 +41,6 @@ const Post=(props)=>
         }}>Show Post Messages</button>
         </>:null}
         {!post.isAuthor&&token ? <button>Message</button>:null}
-
         {(showMessages ? post.messages.map((message)=>
         {
             return <Message key={message._id} message={message}/>;

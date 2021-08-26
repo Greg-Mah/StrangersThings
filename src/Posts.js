@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import APIFetch from './api';
-import NewPostForm from './NewPostForm';
+import PostForm from './PostForm';
 import Post from './Post';
 
 
@@ -30,7 +30,7 @@ const Posts=(props)=>
     },[])
 
     return <>{token ? <h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide New Post form</h2> : null}
-    {showCreatePost ? <NewPostForm token={token} fetchPosts={fetchPosts} setShowCreatePost={setShowCreatePost}/>:null}
+    {showCreatePost ? <PostForm token={token} fetchPosts={fetchPosts} setShowCreatePost={setShowCreatePost}/>:null}
     {posts.map((post)=>
     {
         return <Post key={post._id} post={post} fetchPosts={fetchPosts} token={token}/>

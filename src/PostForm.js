@@ -2,32 +2,28 @@ import React, { useState } from 'react';
 import APIFetch from './api';
 
 
-const NewPostForm =(props)=>
+const PostForm =(props)=>
 {
     const token=props.token;
     const fetchPosts=props.fetchPosts;
     const setShowCreatePost=props.setShowCreatePost;
+    const post=props.post;
 
-    const [title,setTitle]=useState("");
-    const [description,setDescription]=useState("");
-    const [price,setPrice]=useState("");
-    const [location,setLocation]=useState("");
-    const [willDeliver,setWillDeliver]=useState(false);
+    const [title,setTitle]=useState(post ? post.title:"");
+    const [description,setDescription]=useState(post ? post.description:"");
+    const [price,setPrice]=useState(post ? post.price:"");
+    const [location,setLocation]=useState(post ? post.location:"");
+    const [willDeliver,setWillDeliver]=useState(post ? post.willDeliver:false);
     const [message,setMessage]=useState("Fill out the form. Title, Description, and Price are required. Location will default to [On Request] if left empty.");
     
-    const history=useHistory();
-
     return <form onSubmit={(event)=>
     {
         event.preventDefault();
-        if(location==="")
-        {
-            location="[On Request]";
-        }
+
         APIFetch(
             {
-                url:"posts/",
-                method:"POST",
+                url:"posts/"+(post ? post._id:""),
+                method:post ? "PATCH":"POST",
                 token:token,
                 body:
                 {
@@ -36,7 +32,7 @@ const NewPostForm =(props)=>
                         title:title,
                         description:description,
                         price:price,
-                        location:location,
+                        location:location ? location:"[On Request]",
                         willDeliver:willDeliver
                     }
                 }
@@ -48,7 +44,10 @@ const NewPostForm =(props)=>
             {
                 setMessage(response.data.message);
                 fetchPosts();
-                setShowCreatePost();
+                if(!post)
+                {
+                    setShowCreatePost();
+                }
             }
             else
             {
@@ -57,23 +56,23 @@ const NewPostForm =(props)=>
         })
         
     }}>
-        <h2>New Post Form:</h2>
+        <h2>Post Form:</h2>
         <input required type="text" placeholder="Title" value={title} onChange={(event)=>
         {
             setTitle(event.target.value);
-        }}/>
+        }}/><br />
         <input required type="text" placeholder="Description" value={description} onChange={(event)=>
         {
             setDescription(event.target.value);
-        }}/>
+        }}/><br />
         <input required type="text" placeholder="Price" value={price} onChange={(event)=>
         {
             setPrice(event.target.value);
-        }}/>
+        }}/><br />
         <input type="text" placeholder="Location" value={location} onChange={(event)=>
         {
             setLocation(event.target.value);
-        }}/>
+        }}/><br />
         <input type="checkbox" checked={willDeliver}  onChange={()=>
         {
             setWillDeliver(!willDeliver);
@@ -85,4 +84,4 @@ const NewPostForm =(props)=>
     </form>
 }
 
-export default NewPostForm;
+export default PostForm;

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import APIFetch from './api';
+import Message from './Message';
+import MessageForm from './MessageForm';
 import PostForm from './PostForm';
 
 
@@ -14,15 +16,20 @@ const Post=(props)=>
     const [showMessages,setShowMessages]=useState(false);
     const [showEdit,setShowEdit]=useState(false)
 
-    const postAPI=(type,bodyInput,message)=>
+
+    const deletePost=()=>
     {
-        APIFetch({
-            url:"post/"+post._id+(message ? "/messages/":"/"),
-            method:type,
+
+        Promise.all([APIFetch(
+        {
+            url:"posts/"+post._id+"/",
+            method:"DELETE",
             token:token,
-            ...(bodyInput && {body:bodyInput})
-        }
-        )
+        })])
+        .then(()=>
+        {
+            fetchPosts();
+        });
     }
 
     return <>
@@ -31,29 +38,40 @@ const Post=(props)=>
         {(post.description ? <p>{post.description}</p> : null)}
         {(post.price ? <p>Price: {post.price}</p> : null)}
         {(post.location ? <p>Location: {post.location}</p> : null)}
-        <p>Will Deliver: {post.willDeliver + post.willDeliver ? "Yes":"No"}</p>
+        <p>Will Deliver: {post.willDeliver ? "Yes":"No"}</p>
         {(post.createdAt ? <p>Created: {post.createdAt}</p> : null)}
         {(post.updatedAt ? <p>Last updated: {post.updatedAt}</p> : null)}
         {(post.messages.length!==0 ? <p>Messages: {post.messages.length}</p> : null)}
         {post.isAuthor ? <>
+            <button onClick={()=>
+            {
+                setShowEdit(!showEdit);
+            }}>Edit</button>
+            {showEdit ? <PostForm token={token} fetchPosts={fetchPosts} post={post}/>:null}        
+            <button onClick={()=>
+            {
+                deletePost();
+            }}>Delete</button>
+            <button onClick={()=>
+            {
+                setShowMessages(!showMessages);
+            }}>Show Post Messages</button>
+            </>:null
+        }
+        {!post.isAuthor&&token ? 
+            <button onClick={()=>
+            {
+                setShowMessages(!showMessages);
+            }}>Send a message</button>
+            :null}
+        {showMessages ? (post.isAuthor ? post.messages.map((message)=>
+            {
+                return <Message key={message._id} message={message}/>;
+            })
+            : <MessageForm token={token} id={post._id}/>)
+        : null}
 
-        <button onClick={()=>
-        {
-            setShowEdit(!showEdit);
-        }}>Edit</button>
-        {showEdit ? <PostForm token={token} fetchPosts={fetchPosts} post={post}/>:null}        
-        <button>Delete</button>
-        <button onClick={()=>
-        {
-            setShowMessages(!showMessages);
-        }}>Show Post Messages</button>
-        </>:null}
-        {(showMessages ? post.messages.map((message)=>
-        {
-            return <Message key={message._id} message={message}/>;
-        })
-        : null)}
-        {!post.isAuthor&&token ? <button>Message</button>:null}
+        
 
     </>;
 }

@@ -51,7 +51,7 @@ const PostForm =(props)=>
             }
             else
             {
-                setMessage(response.error.message)
+                setMessage(response.error.message);
             }
         })
         
@@ -60,19 +60,23 @@ const PostForm =(props)=>
         <input required type="text" placeholder="Title" value={title} onChange={(event)=>
         {
             setTitle(event.target.value);
-        }}/><br />
+        }}/>
+        <br />
         <input required type="text" placeholder="Description" value={description} onChange={(event)=>
         {
             setDescription(event.target.value);
-        }}/><br />
+        }}/>
+        <br />
         <input required type="text" placeholder="Price" value={price} onChange={(event)=>
         {
             setPrice(event.target.value);
-        }}/><br />
+        }}/>
+        <br />
         <input type="text" placeholder="Location" value={location} onChange={(event)=>
         {
             setLocation(event.target.value);
-        }}/><br />
+        }}/>
+        <br />
         <input type="checkbox" checked={willDeliver}  onChange={()=>
         {
             setWillDeliver(!willDeliver);

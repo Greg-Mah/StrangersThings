@@ -7,6 +7,8 @@ import Post from './Post';
 const Posts=(props)=>
 {
     const [posts,setPosts]=useState([]);
+    const [search,setSearch]=useState("");
+    const [matchPosts,setMatchPosts]=useState(posts);   
     const token=props.token;
     const [showCreatePost, setShowCreatePost]=useState(false);
 
@@ -29,9 +31,26 @@ const Posts=(props)=>
         fetchPosts();
     },[])
 
-    return <>{token ? <h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide New Post form</h2> : null}
+    useEffect(()=>
+    {
+        setMatchPosts(posts.filter((post)=>
+        {
+            return post.title.includes(search)||
+            post.description.includes(search)||
+            post.author.username.includes(search)||
+            post.price.includes(search)||
+            post.location.includes(search);
+        }));
+    },[search,posts])
+
+    return <>
+    <input  type="text" placeholder="Search Posts" value={search} onChange={(event)=>
+    {
+        setSearch(event.target.value);
+    }}/>
+    {token ? <h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide New Post form</h2> : null}
     {showCreatePost ? <PostForm token={token} fetchPosts={fetchPosts} setShowCreatePost={setShowCreatePost}/>:null}
-    {posts.map((post)=>
+    {matchPosts.map((post)=>
     {
         return <Post key={post._id} post={post} fetchPosts={fetchPosts} token={token}/>
     })}

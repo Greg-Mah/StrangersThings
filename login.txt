@@ -1,2 +1,5 @@
 testUser
 testPass
+
+messageUser
+messagePass

@@ -29,7 +29,7 @@ const Posts=(props)=>
     useEffect(()=>
     {
         fetchPosts();
-    },[])
+    },[]);
 
     useEffect(()=>
     {
@@ -41,7 +41,7 @@ const Posts=(props)=>
             post.price.includes(search)||
             post.location.includes(search);
         }));
-    },[search,posts])
+    },[search,posts]);
 
     return <>
     <input  type="text" placeholder="Search Posts" value={search} onChange={(event)=>

@@ -6,9 +6,11 @@ import { useParams } from 'react-router';
     const setToken=props.setToken;
     const setUser=props.setUser;
     const params=useParams();
+    const type=params[0];
+    
     return <>
-    {params.type !== "register" ? <UserForm setToken={setToken} setUser={setUser} type="login"></UserForm> : null}
-    {params.type !== "login" ? <UserForm setToken={setToken} setUser={setUser} type="register"></UserForm> : null}
+    {type !== "register/" ? <UserForm setToken={setToken} setUser={setUser} type="login"></UserForm> : null}
+    {type !== "login/" ? <UserForm setToken={setToken} setUser={setUser} type="register"></UserForm> : null}
     </>
 }
 

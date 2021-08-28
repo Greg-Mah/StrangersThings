@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import APIFetch from './api';
 
 
@@ -15,6 +16,50 @@ const UserForm =(props)=>
     const [message,setMessage]=useState("Enter username and password to "+type+".");
     const [hidden,setHidden]=useState(true);
     
+    useEffect(()=>
+    {
+        if(confirmPassword)
+        {
+            if(confirmPassword!==password)
+            {
+                let output="Password match o=matching character, x=wrong character, _=missing character, *=extra character:";
+                for(let i=0;i<password.length||i<confirmPassword.length;i++)
+                {
+                    if(i<password.length)
+                    {
+                        if(i<confirmPassword.length)
+                        {
+                            if(password.charAt(i)===confirmPassword.charAt(i))
+                            {
+                                output+="o";
+                            }
+                            else
+                            {
+                                output+="x";
+                            }
+                        }
+                        else
+                        {
+                            output+="_";
+                        }
+                    }
+                    else
+                    {
+                        output+="*";
+                    }
+                }
+                setMessage(output);
+            }
+            else
+            {
+                setMessage("Passwords match!")
+            }
+        }
+        else
+        {
+            setMessage("Enter username and password to "+type+".");
+        }
+    },[confirmPassword])
 
 
     return <form onSubmit={(event)=>
@@ -44,12 +89,12 @@ const UserForm =(props)=>
             }
             else
             {
-                setMessage(response.error.message)
+                setMessage(response.error.message);
             }
         })
         
     }}>
-        <h2>{type.toUpperCase()}</h2>
+        <h2><Link to={"/account/"+type+"/"}>{type.toUpperCase()}</Link></h2>
         <input required type="text" placeholder="Username" value={username} onChange={(event)=>
         {
             setUsername(event.target.value);

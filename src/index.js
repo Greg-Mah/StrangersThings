@@ -5,6 +5,8 @@ import Posts from './Posts';
 import Account from './Account';
 import NavBar from './NavBar';
 import Home from './Home';
+import Profile from './Profile';
+import C404 from './404';
 
 
 const App = () => 
@@ -17,13 +19,19 @@ const App = () =>
         <NavBar user={user} setToken={setToken} setUser={setUser}></NavBar>
         <Switch>
             <Route exact path="/">
-                <Home token={token}></Home>
+                <Home user={user}></Home>
             </Route>
-            <Route path="/posts/">
+            <Route exact path="/profile/">
+                <Profile token={token}></Profile>
+            </Route>
+            <Route exact path="/posts/">
                 <Posts token={token} user={user}></Posts>
             </Route>
-            <Route path="/(account/:type|account)/">
+            <Route exact path={["/account/*/","/account/"]}>
                 <Account setToken={setToken} setUser={setUser}></Account>
+            </Route>
+            <Route path="/*">
+                <C404></C404>
             </Route>
         </Switch>
     </BrowserRouter>

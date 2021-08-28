@@ -9,9 +9,11 @@ const NavBar = (props)=>
 
     return <h2>
         <NavLink to="/">Home</NavLink>|
+  
         <NavLink to="/posts/">Posts</NavLink>|
         <NavLink to="/account/">Account</NavLink>
-        {user? <>|Logged in as {user}|<span onClick={()=>{setToken("");setUser("");}}>Logout</span></>:null}
+        {user ? <>|<NavLink to="/profile/">Profile</NavLink></>:null}
+        {user ? <>|Logged in as {user}|<span onClick={()=>{setToken("");setUser("");}}>Logout</span></>:null}
     </h2>
 }
 

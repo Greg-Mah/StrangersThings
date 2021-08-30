@@ -23,7 +23,7 @@ h2, p
 {
     flex-basis: 100%;
 }
-title, style
+title, style, script
 {
     display:none;
 }

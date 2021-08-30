@@ -68,7 +68,7 @@ const Post=(props)=>
             {
                 return <Message key={message._id} message={message}/>;
             })
-            : <MessageForm token={token} id={post._id}/>)
+            : <MessageForm token={token} id={post._id} fetchPosts={fetchPosts}/>)
         : null}
 
         

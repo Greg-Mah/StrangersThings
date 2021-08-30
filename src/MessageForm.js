@@ -8,6 +8,7 @@ const MessageForm=(props)=>
     const [note,setNote]=useState("Enter your message above");
     const id=props.id
     const token=props.token;
+    const fetchPosts=props.fetchPosts;
 
 
 

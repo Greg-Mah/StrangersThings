@@ -7,6 +7,7 @@ import NavBar from './NavBar';
 import Home from './Home';
 import Profile from './Profile';
 import C404 from './404';
+import './style.css';
 
 
 const App = () => 

@@ -32,12 +32,12 @@ const Post=(props)=>
         });
     }
 
-    return <>
+    return <div className="Post">
         {(post.title ? <h2>{post.title}</h2> : null)}
         {(post.author.username ? <p>Seller: {post.author.username}</p> : null)}
         {(post.description ? <p>{post.description}</p> : null)}
         {(post.price ? <p>Price: {post.price}</p> : null)}
-        {(post.location ? <p>Location: {post.location}</p> : null)}
+        {(post.location ? <p>Location: {post.location}</p> : <p>Location: [On Request]</p>)}
         <p>Will Deliver: {post.willDeliver ? "Yes":"No"}</p>
         {(post.createdAt ? <p>Created: {post.createdAt}</p> : null)}
         {(post.updatedAt ? <p>Last updated: {post.updatedAt}</p> : null)}
@@ -73,7 +73,7 @@ const Post=(props)=>
 
         
 
-    </>;
+    </div>;
 }
 
 export default Post;

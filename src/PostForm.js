@@ -16,7 +16,7 @@ const PostForm =(props)=>
     const [willDeliver,setWillDeliver]=useState(post ? post.willDeliver:false);
     const [message,setMessage]=useState("Fill out the form. Title, Description, and Price are required. Location will default to [On Request] if left empty.");
     
-    return <form onSubmit={(event)=>
+    return <form className="PostForm" onSubmit={(event)=>
     {
         event.preventDefault();
 
@@ -77,11 +77,14 @@ const PostForm =(props)=>
             setLocation(event.target.value);
         }}/>
         <br />
-        <input type="checkbox" checked={willDeliver}  onChange={()=>
-        {
-            setWillDeliver(!willDeliver);
-        }}/>
-        <label htmlFor="Will Deliver.">Will Deliver.</label>
+        <div>
+            <input type="checkbox" checked={willDeliver}  onChange={()=>
+            {
+                setWillDeliver(!willDeliver);
+            }}/>
+            <label htmlFor="Will Deliver.">Will Deliver.</label>
+            </div>
+
         <p>{message}</p>
 
         <button type="submit" disabled={!title||!description||!price}>Submit</button>

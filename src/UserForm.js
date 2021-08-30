@@ -103,11 +103,13 @@ const UserForm =(props)=>
         {
             setPassword(event.target.value);
         }}/>
-        <input type="checkbox" checked={hidden}  onChange={()=>
-        {
-            setHidden(!hidden);
-        }}/>
-        <label htmlFor="Hide Password">Hide Password</label>
+        <div>
+            <input type="checkbox" checked={hidden} value={hidden}  onChange={()=>
+            {
+                setHidden(!hidden);
+            }}/>
+            <label htmlFor="Hide Password">Hide Password</label>
+        </div>
         {type==="register" ?
         <input required type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(event)=>
         {

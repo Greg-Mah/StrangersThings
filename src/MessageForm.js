@@ -11,7 +11,7 @@ const MessageForm=(props)=>
 
 
 
-    return<form onSubmit={(event)=>
+    return<form className="MessageForm" onSubmit={(event)=>
         {
             event.preventDefault();
     

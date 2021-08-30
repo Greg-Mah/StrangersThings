@@ -48,13 +48,15 @@ const Posts=(props)=>
     {
         setSearch(event.target.value);
     }}/>
-    {token ? <h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide New Post form</h2> : null}
+    {token ? <h2 onClick={()=>{setShowCreatePost(!showCreatePost)}}>Show/Hide Post form</h2> : null}
     {showCreatePost ? <PostForm token={token} fetchPosts={fetchPosts} setShowCreatePost={setShowCreatePost}/>:null}
-    {matchPosts.map((post)=>
-    {
-        return <Post key={post._id} post={post} fetchPosts={fetchPosts} token={token}/>
-    })}
-    </>
+    <div>
+        {matchPosts.map((post)=>
+        {
+            return <Post key={post._id} post={post} fetchPosts={fetchPosts} token={token}/>
+        })}
+    </div>
+    </>;
 }
 
 export default Posts;

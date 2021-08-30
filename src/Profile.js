@@ -31,14 +31,20 @@ const Profile = (props)=>
         }
     },[token]);
 
+
     return <>
-    {myMessages.map((myMessage)=>
+    <h1>My Messages:</h1>
+    {myMessages.map((myMessage,idx)=>
     {
-        return <Message key={myMessage._id} message={myMessage} />;
+        return <>
+        <h2 key={idx}>Post:{myMessage.post.title}</h2>
+        <Message key={myMessage._id} message={myMessage} />
+        </>;
     })}
+    <h1>My Posts:</h1>
     {myPosts.map((myPost)=>
     {
-        return <Post key={myPost._id} post={myPost} />;
+        return myPost.active ?<Post key={myPost._id} post={myPost} />:null;
     })}
     </>
 }
